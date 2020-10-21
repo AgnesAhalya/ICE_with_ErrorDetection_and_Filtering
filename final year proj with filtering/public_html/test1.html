@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>DISPLAY</title>
+        <style>
+        @media print {
+        html, body {
+             display: none;  /* hide whole page */
+         }
+        }
+</style>
+    </head>
+    <body>
+        <p id="msg">Click anywhere on page</p>
+        <img id="dimg" alt="Wait" src="">
+    
+    <script type="text/javascript">
+ document.addEventListener('click',imgdis); 
+ document.addEventListener('contextmenu', event => event.preventDefault()); 
+      window.addEventListener('keydown', function (e) {
+       window.blur();
+});
+      window.addEventListener('keyup', function (e) {
+      try{
+      var keyCode = e.keyCode ? e.keyCode : e.which;
+            if (keyCode === 44) {
+               try
+               {
+                    var x = document.getElementById("dimg");
+                    x.style.display = "none";
+                    if (typeof(navigator.clipboard)!=='undefined') {
+                    navigator.clipboard.writeText("<empty clipboard>").then(function() {
+                    
+                    }, function() {
+                    
+                    alert("ENABLE JS");
+                    });
+                  }
+                  else
+           {
+           const input = document.createElement('input');
+           input.value = "Printscreen not accepted";
+  input.focus();
+                input.select();
+               const result = document.execCommand('copy');
+               alert(result);
+               url = 'test.html';
+              document.location.href = url;
+
+  if (result === 'unsuccessful') {
+    alert("Print screen protection failed");
+  }
+}
+             }
+               
+               catch(err)
+               {
+                   alert(err);
+               }
+            }
+        }
+        catch(err)
+        {alert(err);}
+        });
+      
+      function imgdis() {
+     document.getElementById("dimg").src=window.localStorage.getItem("str_img");
+     /* var queryString = decodeURIComponent(window.location.search);
+      queryString = queryString.substring(1);
+      var queries = queryString.split("=");
+     document.getElementById("dimg").src=queries[3];*/
+     document.getElementById("msg").innerHTML="DECRYPTED IMAGE";
+      setTimeout(Redirect, 1000);
+      };
+      function  Redirect()
+      {
+      window.location.replace("test.html");  
+      }
+</script>
+
+</body>
+</html>

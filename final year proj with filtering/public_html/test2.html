@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>MAIL</title>   
+        <script src="https://smtpjs.com/v3/smtp.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+        <script type="text/javascript" >
+            function init() {
+            try{
+            Tabletop.init( { 
+            key:'https://docs.google.com/spreadsheets/d/1hTma3Td2Lhpq7dtqGeCZsh8hFeobIWpRsVniWthN99g/edit?usp=sharing',
+            callback:check,
+            simpleSheet: true } );
+            }
+            catch(e)
+            {
+              alert(e);  
+            }
+            }
+            function check(data, tabletop) {
+            var id=document.getElementById('pmail').value.toString();
+            var access='';
+            var i=0;
+            for (i = 0; i < data.length; i++) 
+            {
+              if(id===data[i].EmailId)
+              {
+                  access=data[i].Access;
+                  alert(access);
+                  if (access==='A'){sendEmail();break;}
+                  else {alert('Access Restricted');}
+                  
+              }
+            }
+              if(i===data.length)
+              {
+                  var name=document.getElementById('pname').value.toString();
+                  var msg=name+'  with Email id: '+id+' is  requesting access';
+                  Email.send({
+				Host: "smtp.gmail.com",
+				Username : "icedemo20@gmail.com",
+				Password : "licet@123",
+				To : "icedemo20@gmail.com",
+				From : "icedemo20@gmail.com",
+				Subject : "KEY_REQUISITION",
+				Body : msg
+			})
+                        .then(function(){
+				alert("Access Requested");
+                                document.location.href="test.html";
+                               
+			});
+              }
+            
+            }
+		function sendEmail() {
+                
+                var send_add=document.getElementById('pmail').value.toString();
+                var msg=window.localStorage.getItem("key").toString();
+			Email.send({
+				Host: "smtp.gmail.com",
+				Username : "icedemo20@gmail.com",
+				Password : "licet@123",
+				To : send_add,
+				From : "icedemo20@gmail.com",
+				Subject : "KEY",
+				Body : msg
+			})
+			.then(function(){
+				alert("mail sent successfully");
+                                document.location.href="test.html";
+			});
+                
+		}
+	
+</script>
+    </head>
+    <body>
+     Name: <input id="pname" name="name" type="text" />
+     E-mail: <input id="pmail" name="email" type="text" />
+     <button type="button" value="Send Email" onclick="init()">SEND MAIL</button>
+
+
+    </body>
+</html>
